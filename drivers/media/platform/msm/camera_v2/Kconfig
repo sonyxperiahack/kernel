@@ -234,6 +234,8 @@ config OV12830
 config SONY_CAMERA
 	bool "Camera for Sony devices"
 	depends on MSMB_CAMERA
+	select VIDEOBUF2_VMALLOC
+	default n
 	---help---
 	  Enables support for the cameras found in
 	  certain Sony Mobile devices.
