@@ -213,7 +213,7 @@ static int32_t msm_cci_validate_queue(struct cci_device *cci_dev,
 			cci_master_info[master].reset_complete, CCI_TIMEOUT);
 #endif
 		if (rc <= 0) {
-			pr_err("%s: wait_for_completion_timeout %d\n",
+			pr_err("%s: wait_for_completion_interruptible_timeout %d\n",
 				 __func__, __LINE__);
 			if (rc == 0)
 				rc = -ETIMEDOUT;
@@ -456,7 +456,7 @@ static int32_t msm_cci_i2c_read(struct v4l2_subdev *sd,
 
 	val = 1 << ((master * 2) + queue);
 	msm_camera_io_w(val, cci_dev->base + CCI_QUEUE_START_ADDR);
-	CDBG("%s:%d E wait_for_completion_timeout\n", __func__,
+	CDBG("%s:%d E wait_for_completion_interruptible_timeout\n", __func__,
 		__LINE__);
 #if defined(CONFIG_SONY_CAM_V4L2)
 	retry_count = 4;
@@ -475,7 +475,7 @@ static int32_t msm_cci_i2c_read(struct v4l2_subdev *sd,
 		cci_master_info[master].reset_complete, CCI_TIMEOUT);
 #endif
 	if (rc <= 0) {
-		pr_err("%s: wait_for_completion_timeout %d\n",
+		pr_err("%s: wait_for_completion_interruptible_timeout %d\n",
 			 __func__, __LINE__);
 		if (rc == 0)
 			rc = -ETIMEDOUT;
@@ -484,7 +484,7 @@ static int32_t msm_cci_i2c_read(struct v4l2_subdev *sd,
 	} else {
 		rc = 0;
 	}
-	CDBG("%s:%d E wait_for_completion_timeout\n", __func__,
+	CDBG("%s:%d E wait_for_completion_interruptible_timeout\n", __func__,
 		__LINE__);
 
 	read_words = msm_camera_io_r(cci_dev->base +
@@ -697,7 +697,7 @@ static int32_t msm_cci_i2c_write(struct v4l2_subdev *sd,
 		cci_master_info[master].reset_complete, CCI_TIMEOUT);
 #endif
 	if (rc <= 0) {
-		pr_err("%s: wait_for_completion_timeout %d\n",
+		pr_err("%s: wait_for_completion_interruptible_timeout %d\n",
 			 __func__, __LINE__);
 		if (rc == 0)
 			rc = -ETIMEDOUT;
@@ -768,7 +768,7 @@ static int32_t msm_cci_init(struct v4l2_subdev *sd,
 				msm_camera_io_w(CCI_M1_RESET_RMSK,
 					cci_dev->base + CCI_RESET_CMD_ADDR);
 			/* wait for reset done irq */
-			rc = wait_for_completion_timeout(
+			rc = wait_for_completion_interruptible_timeout(
 				&cci_dev->cci_master_info[master].
 				reset_complete,
 				CCI_TIMEOUT);
@@ -821,7 +821,7 @@ static int32_t msm_cci_init(struct v4l2_subdev *sd,
 		CCI_TIMEOUT);
 #endif
 	if (rc <= 0) {
-		pr_err("%s: wait_for_completion_timeout %d\n",
+		pr_err("%s: wait_for_completion_interruptible_timeout %d\n",
 			 __func__, __LINE__);
 		if (rc == 0)
 			rc = -ETIMEDOUT;

@@ -2206,6 +2206,7 @@ int main(int argc, char **argv)
 	if (dump_write)
 		write_dump(dump_write);
 
+/*
 	if (sec_mismatch_count && !sec_mismatch_verbose) {
 		merror(
 		"modpost: Found %d section mismatch(es).\n"
@@ -2222,6 +2223,7 @@ int main(int argc, char **argv)
 		"build with:\n'make CONFIG_NO_ERROR_ON_MISMATCH=y'\n"
 		"(NOTE: This is not recommended)\n");
 	}
+*/
 
 	return err;
 }

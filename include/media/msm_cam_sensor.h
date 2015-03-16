@@ -88,12 +88,6 @@ enum msm_sensor_clk_type_t {
 enum msm_sensor_power_seq_gpio_t {
 	SENSOR_GPIO_RESET,
 	SENSOR_GPIO_STANDBY,
-#ifdef CONFIG_SONY_CAMERA
-	SENSOR_GPIO_CAM_VAA_V2P8,
-	SENSOR_GPIO_CAM_VDDAF_V2P8,
-	SENSOR_GPIO_CAM_VDDIO_V1P8,
-	SENSOR_GPIO_RESET1,
-#endif
 	SENSOR_GPIO_AF_PWDM,
 	SENSOR_GPIO_VIO,
 	SENSOR_GPIO_VANA,
@@ -276,6 +270,9 @@ struct msm_camera_i2c_seq_reg_setting {
 	uint16_t size;
 	enum msm_camera_i2c_reg_addr_type addr_type;
 	uint16_t delay;
+/* extension begin */
+	uint16_t slave_addr;
+/* extension end */
 };
 
 struct msm_camera_i2c_array_write_config {
@@ -431,6 +428,9 @@ enum msm_sensor_cfg_type_t {
 	CFG_WRITE_I2C_ARRAY,
 	CFG_SLAVE_WRITE_I2C_ARRAY,
 	CFG_WRITE_I2C_SEQ_ARRAY,
+/* extension begin */
+	CFG_WRITE_I2C_SEQ_ARRAY_WITH_SID,
+/* extension end */
 	CFG_POWER_UP,
 	CFG_POWER_DOWN,
 	CFG_SET_STOP_STREAM_SETTING,

@@ -113,14 +113,6 @@ int msm_camera_get_dt_power_setting_data(struct device_node *of_node,
 				ps[i].seq_val = SENSOR_GPIO_STANDBY;
 			else if (!strcmp(seq_name, "sensor_gpio_vdig"))
 				ps[i].seq_val = SENSOR_GPIO_VDIG;
-#ifdef CONFIG_SONY_CAMERA
-			else if (!strcmp(seq_name, "sensor_gpio_cam_vaa_v2p8"))
-				ps[i].seq_val = SENSOR_GPIO_CAM_VAA_V2P8;
-			else if (!strcmp(seq_name, "sensor_gpio_cam_vddio_v1p8"))
-				ps[i].seq_val = SENSOR_GPIO_CAM_VDDIO_V1P8;
-			else if (!strcmp(seq_name, "sensor_gpio_cam_vddaf_v2p8"))
-				ps[i].seq_val = SENSOR_GPIO_CAM_VDDAF_V2P8;
-#endif
 			else
 				rc = -EILSEQ;
 			break;
@@ -498,9 +490,6 @@ int msm_camera_power_up(struct msm_camera_power_ctrl_t *ctrl,
 	if (rc < 0)
 		no_gpio = rc;
 
-#ifdef CONFIG_MACH_SONY_EAGLE
-	gpio_set_value_cansleep(69,1);
-#endif
 	for (index = 0; index < ctrl->power_setting_size; index++) {
 		CDBG("%s index %d\n", __func__, index);
 		power_setting = &ctrl->power_setting[index];
@@ -590,6 +579,11 @@ int msm_camera_power_up(struct msm_camera_power_ctrl_t *ctrl,
 	return 0;
 power_up_failed:
 	pr_err("%s:%d failed\n", __func__, __LINE__);
+	if (device_type == MSM_CAMERA_PLATFORM_DEVICE) {
+		sensor_i2c_client->i2c_func_tbl->i2c_util(
+			sensor_i2c_client, MSM_CCI_RELEASE);
+	}
+
 	for (index--; index >= 0; index--) {
 		CDBG("%s index %d\n", __func__, index);
 		power_setting = &ctrl->power_setting[index];

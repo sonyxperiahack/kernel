@@ -911,8 +911,13 @@ int __msm_jpeg_init(struct msm_jpeg_device *pgmn_dev)
 
 	mutex_init(&pgmn_dev->lock);
 
+#if defined(CONFIG_SONY_CAM_V4L2)
+	pr_info("%s:%d] Jpeg Device id %d", __func__, __LINE__,
+		   pgmn_dev->pdev->id);
+#else
 	pr_err("%s:%d] Jpeg Device id %d", __func__, __LINE__,
 		   pgmn_dev->pdev->id);
+#endif
 	idx = pgmn_dev->pdev->id;
 	pgmn_dev->idx = idx;
 	pgmn_dev->iommu_cnt = 1;
